@@ -1,0 +1,18 @@
+
+
+.footerlist{
+width:100%;
+height:100%;
+color:white;
+overflow:auto;
+  display: flex;
+  justify-content: center;
+}
+
+.socImg{
+margin:auto;
+font-size:20px;
+flex-grow:1;
+text-align:center;
+}
+

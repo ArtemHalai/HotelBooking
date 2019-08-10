@@ -1,0 +1,96 @@
+body{
+position:relative;
+width:100vw;
+height:100vh;
+overflow:hidden;
+}
+
+.parent {
+    width: 100%;
+    height: 100%;
+}
+
+.child1 {
+text-align:center;
+width:100%;
+text-align:center;
+    height: 82%;
+    overflow: scroll;
+}
+
+.child2 {
+    height: 30%;
+}
+
+.table{
+border:3px solid black;
+}
+
+tr{
+text-align:center;
+}
+thead {
+text-align:center;
+font-weight:bold;
+border:3px solid black;
+
+}
+
+td{
+border-left:1px solid black;
+border-right:1px solid black;
+border-bottom:1px solid black;
+}
+
+tfoot{
+text-align:center;
+font-weight:bold;
+border:3px solid black;
+}
+
+::-webkit-scrollbar {
+         width: 0px;
+     }
+
+.prevNextContainer{
+background: linear-gradient(to right, #1F1C2C,#4286f4);
+position:absolute;
+                bottom:0;
+                left:0;
+                right:0;
+border-top: 3px solid grey;
+
+display:flex;
+    flex-direction:row;
+    justify-content: center;
+}
+btn:focus {
+ outline: 0;
+ }
+   .btn{
+   flex-grow:1
+   cursor:pointer;
+   margin:1%;
+   }
+
+.pages{
+flex-grow:1
+padding-top:1%;
+}
+
+input:focus{
+outline:none;
+}
+
+.error{
+font-weight:bold;
+font-size:1.5em;
+}
+
+.adminnav{
+background: linear-gradient(to right, #1F1C2C,#4286f4);
+font-size:1.3em;
+}
+
+
+

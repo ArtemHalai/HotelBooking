@@ -1,0 +1,15 @@
+body{
+width:100vw;
+height:100vh;
+overflow:hidden;
+  background-image: url("../images/5.jpg");
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
+.adminnav{
+background: linear-gradient(to right, #1F1C2C, #928DAB);
+    font-size:1.3em;
+}
+
