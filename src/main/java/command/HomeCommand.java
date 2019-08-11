@@ -5,10 +5,12 @@ import enums.Mappings;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-public class HomeCommand extends AbstractCommand{
+import static enums.Mappings.HOME;
+
+public class HomeCommand implements Command {
 
     @Override
     public String execute(HttpServletRequest request, HttpServletResponse response) {
-        return Mappings.HOME.getName();
+        return HOME.getName();
     }
 }

@@ -72,9 +72,10 @@ public class RoomDaoJDBC implements RoomDao {
                 " AND rooms.smoke = ?" +
                 " AND rooms.room_type_id = ?" +
                 " AND rooms.price BETWEEN ?" +
-                " AND ? AND (reservations.date_in NOT BETWEEN ?" +
-                " AND ? AND  reservations.date_out NOT BETWEEN ? AND ?" +
-                " OR reservations.date_in IS NULL OR reservations.room_id IS NULL)";
+                " AND ? AND (? <reservations.date_in" +
+                " AND ? <=reservations.date_in AND ? >=reservations.date_out AND ?>reservations.date_out AND ? NOT BETWEEN " +
+                "reservations.date_in AND reservations.date_out AND ? NOT BETWEEN reservations.date_in AND reservations.date_out" +
+                " OR reservations.room_id IS NULL)";
 
         statement = connection.prepareStatement(getNecessaryRoom);
         statement.setBoolean(1, balconyBool);
@@ -86,6 +87,8 @@ public class RoomDaoJDBC implements RoomDao {
         statement.setDate(7, dateTo);
         statement.setDate(8, dateFrom);
         statement.setDate(9, dateTo);
+        statement.setDate(10, dateFrom);
+        statement.setDate(11, dateTo);
 
         resultSet = statement.executeQuery();
 

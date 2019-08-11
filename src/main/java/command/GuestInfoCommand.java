@@ -24,7 +24,7 @@ import static enums.Errors.SOMETHING_WRONG;
 import static enums.Mappings.SUCCESSFUL;
 import static enums.Mappings.UNSUCCESSFUL;
 
-public class GuestInfoCommand extends AbstractCommand {
+public class GuestInfoCommand implements Command {
 
     private GuestInfoFacade guestInfoFacade = new GuestInfoFacade();
     private PaymentFacade paymentFacade = new PaymentFacade();
@@ -75,7 +75,7 @@ public class GuestInfoCommand extends AbstractCommand {
                 guestId = guestInfoFacade.addGuest(guest);
                 logger.info("Guest with id "+guestId+" added in database");
             } catch (SQLException e) {
-                logger.error(e.getMessage());
+                logger.error(e.getMessage(), e);
             }
 
             if (guestId > 0) {
@@ -93,7 +93,7 @@ public class GuestInfoCommand extends AbstractCommand {
                     Connection connection = JDBCConnectionFactory.getInstance().getConnection();
                     addedId = bookingFacade.addGuestIdToReservation(g, reservation, connection);
                 } catch (SQLException e) {
-                    logger.error(e.getMessage());
+                    logger.error(e.getMessage(), e);
                 }
                 if (addedPayment && addedId)
                     return SUCCESSFUL.getName();

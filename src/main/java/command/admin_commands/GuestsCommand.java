@@ -1,6 +1,7 @@
 package command.admin_commands;
 
-import command.AbstractCommand;
+import command.Command;
+import exceptions.AccessException;
 import facade.admin.GuestsAdminFacade;
 import model.dto.GuestsAdminDto;
 import org.apache.log4j.Logger;
@@ -15,7 +16,7 @@ import static enums.Mappings.GUESTS_ADMIN;
 import static enums.Mappings.LOGIN_VIEW;
 import static enums.Role.ADMIN;
 
-public class GuestsCommand extends AbstractCommand {
+public class GuestsCommand implements Command {
 
     private GuestsAdminFacade facade = new GuestsAdminFacade();
 
@@ -33,7 +34,7 @@ public class GuestsCommand extends AbstractCommand {
             try {
                 guestsAdminDto = facade.getAllGuests(guestsAdminDto);
             } catch (SQLException e) {
-                logger.error(e.getMessage());
+                logger.error(e.getMessage(), e);
             }
 
             if (!guestsAdminDto.getList().isEmpty()) {
@@ -47,7 +48,11 @@ public class GuestsCommand extends AbstractCommand {
             }
             return GUESTS_ADMIN.getName();
         }else {
-            logger.info("Someone tried to see admin page with url:"+request.getRequestURI()+" without authentication");
+            try {
+                throw new AccessException("Someone tried to access admin page with url:"+request.getRequestURI()+" without authentication");
+            } catch (AccessException e) {
+                logger.error(e.getMessage(), e);
+            }
             return LOGIN_VIEW.getName();
         }
     }

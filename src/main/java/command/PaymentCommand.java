@@ -2,6 +2,7 @@ package command;
 
 import controller.validators.PaymentValidator;
 import controller.validators.Validator;
+import exceptions.PaymentException;
 import facade.PaymentFacade;
 import model.dto.PaymentTransactionDto;
 import org.apache.log4j.Logger;
@@ -16,7 +17,7 @@ import static enums.Attributes.*;
 import static enums.Mappings.SUCCESSFUL;
 import static enums.Mappings.UNSUCCESSFUL;
 
-public class PaymentCommand extends AbstractCommand {
+public class PaymentCommand implements Command {
     private PaymentFacade paymentFacade = new PaymentFacade();
 
     private final Logger logger = Logger.getLogger(this.getClass());
@@ -58,14 +59,18 @@ public class PaymentCommand extends AbstractCommand {
                         username, Integer.parseInt(reservationId));
                 added = paymentFacade.addPaymentWithTransaction(paymentTransactionDto);
             } catch (SQLException e) {
-                logger.error(e.getMessage());
+                logger.error(e.getMessage(), e);
             }
 
             if (added) {
                 logger.info("Payment was successful");
                 return SUCCESSFUL.getName();
             } else {
-                logger.info("Payment was unsuccessful");
+                try {
+                    throw new PaymentException("Payment was unsuccessful");
+                } catch (PaymentException e) {
+                    logger.error(e.getMessage(), e);
+                }
                 return UNSUCCESSFUL.getName();
             }
         }

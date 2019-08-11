@@ -1,6 +1,7 @@
 package command.admin_commands;
 
-import command.AbstractCommand;
+import command.Command;
+import exceptions.AccessException;
 import facade.admin.PaymentsAdminFacade;
 import model.dto.PaymentsAdminDto;
 import org.apache.log4j.Logger;
@@ -15,7 +16,7 @@ import static enums.Mappings.LOGIN_VIEW;
 import static enums.Mappings.PAYMENTS_ADMIN;
 import static enums.Role.ADMIN;
 
-public class PaymentsCommand extends AbstractCommand {
+public class PaymentsCommand implements Command {
 
     private PaymentsAdminFacade facade = new PaymentsAdminFacade();
 
@@ -34,7 +35,7 @@ public class PaymentsCommand extends AbstractCommand {
             try {
                 paymentsAdminDto = facade.getAllPayments(paymentsAdminDto);
             } catch (SQLException e) {
-                logger.error(e.getMessage());
+                logger.error(e.getMessage(), e);
             }
 
             if (!paymentsAdminDto.getList().isEmpty()) {
@@ -48,7 +49,11 @@ public class PaymentsCommand extends AbstractCommand {
             }
             return PAYMENTS_ADMIN.getName();
         }else {
-            logger.info("Someone tried to see admin page with url:"+request.getRequestURI()+" without authentication");
+            try {
+                throw new AccessException("Someone tried to access admin page with url:"+request.getRequestURI()+" without authentication");
+            } catch (AccessException e) {
+                logger.error(e.getMessage(), e);
+            }
             return LOGIN_VIEW.getName();
         }
     }

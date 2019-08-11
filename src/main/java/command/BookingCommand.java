@@ -2,6 +2,7 @@ package command;
 
 import controller.validators.BookingValidator;
 import enums.Role;
+import exceptions.NoAvailableRoomException;
 import facade.BookingFacade;
 import facade.RoomRequestFacade;
 import model.dto.BookingApprovementDTO;
@@ -21,7 +22,7 @@ import static enums.Errors.NO_AVAILABLE_ROOM;
 import static enums.Mappings.GUEST_INFO;
 import static enums.Mappings.PAYMENT;
 
-public class BookingCommand extends AbstractCommand {
+public class BookingCommand implements Command {
 
     private BookingFacade bookingFacade = new BookingFacade();
     private RoomRequestFacade roomRequestFacade = new RoomRequestFacade();
@@ -51,7 +52,7 @@ public class BookingCommand extends AbstractCommand {
                 NecessaryRoomDto necessaryRoomDto = new NecessaryRoomDto(balcony, smoke, dateIn, dateOut, roomTypeId, priceRange);
                 bookingApprovementDTO = bookingFacade.booking(necessaryRoomDto);
             } catch (SQLException | ParseException e) {
-                logger.error(e.getMessage());
+                logger.error(e.getMessage(), e);
             }
 
             if (bookingApprovementDTO != null && bookingApprovementDTO.getReservationId() > 0) {
@@ -61,7 +62,7 @@ public class BookingCommand extends AbstractCommand {
                     RoomRequestDto roomRequestDto = new RoomRequestDto(roomTypeId, dateIn, dateOut);
                     roomRequestFacade.addRoomRequest(roomRequestDto);
                 } catch (ParseException | SQLException e) {
-                    logger.error(e.getMessage());
+                    logger.error(e.getMessage(), e);
                 }
 
                 session.setAttribute(ROOM_ID.getName(), bookingApprovementDTO.getRoomId());
@@ -76,8 +77,12 @@ public class BookingCommand extends AbstractCommand {
             } else {
                 errors.put(AVAILABLE.getName(), NO_AVAILABLE_ROOM.getName());
                 req.setAttribute(ERRORS.getName(), errors);
-                logger.info("No available room with request parameter: date in - " + dateIn + ", date out - " + dateOut + " and room type id is " +
-                        roomTypeId);
+                try {
+                    throw new NoAvailableRoomException("No available room with request parameter: date in - " + dateIn + ", date out - " + dateOut + " and room type id is " +
+                            roomTypeId);
+                } catch (NoAvailableRoomException e) {
+                    logger.error(e.getMessage(), e);
+                }
                 return ERRORS.getName();
             }
         }

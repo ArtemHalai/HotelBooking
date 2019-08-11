@@ -21,7 +21,7 @@ import static enums.Mappings.HOME_ADMIN;
 import static enums.Role.ADMIN;
 
 
-public class LoginCommand extends AbstractCommand {
+public class LoginCommand implements Command  {
     private LoginFacade loginFacade = new LoginFacade();
 
     private final Logger logger = Logger.getLogger(this.getClass());
@@ -43,7 +43,7 @@ public class LoginCommand extends AbstractCommand {
                 GuestDto guestDto = new GuestDto(userName, password);
                 guest = loginFacade.guestExist(guestDto);
             } catch (SQLException e) {
-                logger.error(e.getMessage());
+                logger.error(e.getMessage(), e);
             }
 
             if (guest != null) {

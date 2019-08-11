@@ -18,7 +18,7 @@ import static enums.Errors.USER_ALREADY_EXISTS;
 import static enums.Mappings.HOME;
 import static enums.Role.GUEST;
 
-public class RegistrationCommand extends AbstractCommand {
+public class RegistrationCommand implements Command {
     private RegistrationFacade registrationFacade = new RegistrationFacade();
 
     private final Logger logger = Logger.getLogger(this.getClass());
@@ -49,7 +49,7 @@ public class RegistrationCommand extends AbstractCommand {
             try {
                 added = registrationFacade.registerGuest(guest);
             } catch (SQLException e) {
-                logger.error(e.getMessage());
+                logger.error(e.getMessage(), e);
             }
 
             if (added) {

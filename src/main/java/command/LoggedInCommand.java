@@ -9,7 +9,7 @@ import static enums.Mappings.LOGGED_IN_VIEW;
 import static enums.Role.ADMIN;
 import static enums.Role.GUEST;
 
-public class LoggedInCommand extends AbstractCommand {
+public class LoggedInCommand implements Command  {
 
     private final Logger logger = Logger.getLogger(this.getClass());
 
