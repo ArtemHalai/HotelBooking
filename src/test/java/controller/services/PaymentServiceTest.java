@@ -53,19 +53,14 @@ public class PaymentServiceTest {
         connection.setAutoCommit(false);
 
         PaymentTransactionDto paymentTransactionDto = new PaymentTransactionDto();
-        Payment payment = new Payment();
-        Guest guest = new Guest();
-        guest.setGuestId(1);
-        Reservation reservation = new Reservation();
-        reservation.setId(1);
+
+        when(guestDao.getGuest(paymentTransactionDto, connection)).thenReturn(new Guest());
+        when(paymentDao.addPaymentWithTransaction(any(), any())).thenReturn(true);
+        int count = 1;
+        when(reservationDao.addGuestIdToReservation(any(), any(), any())).thenReturn(count);
         service.addPaymentWithTransaction(paymentTransactionDto, connection);
         verify(guestDao).getGuest(paymentTransactionDto, connection);
-
-        service.isAdded(connection, payment);
-        service.isAdded(connection, payment);
-        verify(paymentDao, times(2)).addPaymentWithTransaction(payment, connection);
-
-        service.getCount(connection, guest, reservation);
-        verify(reservationDao).addGuestIdToReservation(guest, reservation, connection);
+        verify(paymentDao).addPaymentWithTransaction(any(), any());
+        verify(reservationDao).addGuestIdToReservation(any(), any(), any());
     }
 }

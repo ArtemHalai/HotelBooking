@@ -14,16 +14,37 @@ import java.util.List;
 
 import static enums.Attributes.PAGE_SIZE;
 
+/**
+ * Define an data access object used for executing guest's requests to database using JDBC.
+ * This class is implementation of GuestDao.
+ *
+ * @see GuestDao
+ */
 public class GuestDaoJDBC implements GuestDao {
 
     private Connection connection = null;
     private PreparedStatement statement = null;
     private ResultSet resultSet = null;
 
+    /**
+     * Method to get connection.
+     *
+     * @return The Connection object from connection pool.
+     * @throws SQLException If sql exception occurred while processing this request.
+     * @see JDBCConnectionFactory
+     */
     private Connection getConnection() throws SQLException {
         return JDBCConnectionFactory.getInstance().getConnection();
     }
 
+    /**
+     * Method to add guest using {@link #connection}, {@link #statement}, {@link #resultSet}.
+     *
+     * @param guest The Guest object.
+     * @return The int value representing id of added guest.
+     * @throws SQLException If sql exception occurred while processing this request.
+     * @see Guest
+     */
     public int addGuest(Guest guest) throws SQLException {
         String insertGuest = "INSERT INTO users (name, surname, username, password, age, phone, passport_id, role) VALUES (" +
                 "?,?,?,?,?,?,?,?)";
@@ -49,6 +70,15 @@ public class GuestDaoJDBC implements GuestDao {
         return guestId;
     }
 
+    /**
+     * Method to check if guest exists or not using {@link #connection}, {@link #statement}, {@link #resultSet}.
+     *
+     * @param guestDto The GuestDto object.
+     * @return The Guest object.
+     * @throws SQLException If sql exception occurred while processing this request.
+     * @see GuestDto
+     * @see Guest
+     */
     public Guest guestExists(GuestDto guestDto) throws SQLException {
         String getGuest = "SELECT * FROM users WHERE username = ? AND password = ?";
         connection = getConnection();
@@ -75,6 +105,15 @@ public class GuestDaoJDBC implements GuestDao {
         return guest;
     }
 
+    /**
+     * Method to check if username exists or not using {@link #statement}, {@link #resultSet}.
+     *
+     * @param guest      The Guest object.
+     * @param connection The Connection object to connect to database.
+     * @return <code>true</code> if guest with username exists; <code>false</code> otherwise.
+     * @throws SQLException If sql exception occurred while processing this request.
+     * @see Guest
+     */
     public boolean usernameExists(Guest guest, Connection connection) throws SQLException {
         String getGuest = "SELECT * FROM users WHERE username = ?";
 
@@ -90,6 +129,15 @@ public class GuestDaoJDBC implements GuestDao {
         return false;
     }
 
+    /**
+     * Method to add registered guest in database using {@link #statement}, {@link #resultSet}.
+     *
+     * @param guest      The Guest object.
+     * @param connection The Connection object to connect to database.
+     * @return <code>true</code> if guest was added; <code>false</code> otherwise.
+     * @throws SQLException If sql exception occurred while processing this request.
+     * @see Guest
+     */
     public boolean addRegisteredGuest(Guest guest, Connection connection) throws SQLException {
         String insertGuest = "INSERT INTO users (name, surname, username, password, age, phone, passport_id, role) VALUES (" +
                 "?,?,?,?,?,?,?,?)";
@@ -115,6 +163,14 @@ public class GuestDaoJDBC implements GuestDao {
         return false;
     }
 
+    /**
+     * Method to get all guests from database using {@link #connection}, {@link #statement}, {@link #resultSet}.
+     *
+     * @param guestsAdminDto The GuestAdminDto object.
+     * @return The GuestsAdminDto object containing necessary data.
+     * @throws SQLException If sql exception occurred while processing this request.
+     * @see GuestsAdminDto
+     */
     public GuestsAdminDto getAllGuests(GuestsAdminDto guestsAdminDto) throws SQLException {
         String getAllGuests = "SELECT * FROM users LIMIT ? OFFSET ?";
         connection = getConnection();
@@ -146,6 +202,16 @@ public class GuestDaoJDBC implements GuestDao {
         return guestsAdminDto;
     }
 
+    /**
+     * Method to get guest from database using {@link #statement}, {@link #resultSet}.
+     *
+     * @param paymentTransactionDto The PaymentTransactionDto object.
+     * @param connection            The Connection object to connect to database.
+     * @return The Guest object.
+     * @throws SQLException If sql exception occurred while processing this request.
+     * @see PaymentTransactionDto
+     * @see Guest
+     */
     @Override
     public Guest getGuest(PaymentTransactionDto paymentTransactionDto, Connection connection) throws SQLException {
         String getGuest = "SELECT * FROM users WHERE username = ?";
@@ -163,6 +229,13 @@ public class GuestDaoJDBC implements GuestDao {
         return guest;
     }
 
+    /**
+     * Method to get count of all guests in database using {@link #statement}, {@link #resultSet}.
+     *
+     * @param connection The Connection object to connect to database.
+     * @return The int value representing amount of all guests in database.
+     * @throws SQLException If sql exception occurred while processing this request.
+     */
     @Override
     public int count(Connection connection) throws SQLException {
         String count = "SELECT COUNT(*) AS total FROM users";
@@ -176,6 +249,12 @@ public class GuestDaoJDBC implements GuestDao {
 
     }
 
+    /**
+     * Method to close all connections that are open in this class {@link #connection}, {@link #statement},
+     * {@link #resultSet}.
+     *
+     * @throws SQLException If sql exception occurred while processing this request.
+     */
     public void close() throws SQLException {
         try {
             if (resultSet != null) {

@@ -17,11 +17,24 @@ import static enums.Attributes.*;
 import static enums.Mappings.SUCCESSFUL;
 import static enums.Mappings.UNSUCCESSFUL;
 
+/**
+ * Define an object used for executing payment command on PaymentFacade.
+ *
+ * @see PaymentFacade
+ */
 public class PaymentCommand implements Command {
     private PaymentFacade paymentFacade = new PaymentFacade();
 
     private final Logger logger = Logger.getLogger(this.getClass());
 
+    /**
+     * Method to execute payment actions on HttpServletRequest and HttpServletResponse.
+     *
+     * @param req  The HttpServletRequest
+     * @param resp The HttpServletResponse
+     * @return The string value representing mapping value.
+     * @see enums.Mappings
+     */
     @Override
     public String execute(HttpServletRequest req, HttpServletResponse resp) {
 

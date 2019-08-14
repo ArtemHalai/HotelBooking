@@ -3,13 +3,29 @@ package factories;
 import controller.services.*;
 import controller.services.admin.*;
 
+/**
+ * A class that provides factory to get necessary service.
+ */
 public class ServiceFactory {
+
+    /**
+     * Static instance of this class.
+     */
     private static volatile ServiceFactory factory = null;
 
+    /**
+     * Private constructor to prevent
+     * the instantiation of this class directly
+     */
     private ServiceFactory() {
 
     }
 
+    /**
+     * Gets the instance of factory.
+     *
+     * @return the instance of {@link #factory}.
+     */
     public static ServiceFactory getInstance() {
         if (factory == null) {
             synchronized (ServiceFactory.class) {
@@ -21,47 +37,124 @@ public class ServiceFactory {
         return factory;
     }
 
-    public LoginService getLoginService(){
+    /**
+     * Gets the LoginService.
+     *
+     * @return the instance of LoginService.
+     *
+     * @see LoginService
+     */
+    public LoginService getLoginService() {
         return new LoginService();
     }
 
-    public RegistrationService getRegistrationService(){
+    /**
+     * Gets the RegistrationService.
+     *
+     * @return the instance of RegistrationService.
+     *
+     * @see RegistrationService
+     */
+    public RegistrationService getRegistrationService() {
         return new RegistrationService();
     }
 
-    public BookingService getBookingService(){
+    /**
+     * Gets the BookingService.
+     *
+     * @return the instance of BookingService.
+     *
+     * @see BookingService
+     */
+    public BookingService getBookingService() {
         return new BookingService();
     }
 
-    public GuestInfoService getGuestInfoService(){
+    /**
+     * Gets the GuestInfoService.
+     *
+     * @return the instance of GuestInfoService.
+     *
+     * @see GuestInfoService
+     */
+    public GuestInfoService getGuestInfoService() {
         return new GuestInfoService();
     }
 
-    public PaymentService getPaymentService(){
+    /**
+     * Gets the PaymentService.
+     *
+     * @return the instance of PaymentService.
+     *
+     * @see PaymentService
+     */
+    public PaymentService getPaymentService() {
         return new PaymentService();
     }
 
-    public RoomRequestService getRoomRequestService(){
+    /**
+     * Gets the RoomRequestService.
+     *
+     * @return the instance of RoomRequestService.
+     *
+     * @see RoomRequestService
+     */
+    public RoomRequestService getRoomRequestService() {
         return new RoomRequestService();
     }
 
-    public GuestInfoAdminService getGuestInfoAdminService(){
+    /**
+     * Gets the GuestInfoAdminService.
+     *
+     * @return the instance of GuestInfoAdminService.
+     *
+     * @see GuestInfoAdminService
+     */
+    public GuestInfoAdminService getGuestInfoAdminService() {
         return new GuestInfoAdminService();
     }
 
-    public PaymentInfoAdminService getPaymentInfoAdminService(){
+    /**
+     * Gets the PaymentInfoAdminService.
+     *
+     * @return the instance of PaymentInfoAdminService.
+     *
+     * @see PaymentInfoAdminService
+     */
+    public PaymentInfoAdminService getPaymentInfoAdminService() {
         return new PaymentInfoAdminService();
     }
 
-    public ReservationInfoAdminService getReservationInfoAdminService(){
+    /**
+     * Gets the ReservationInfoAdminService.
+     *
+     * @return the instance of ReservationInfoAdminService.
+     *
+     * @see ReservationInfoAdminService
+     */
+    public ReservationInfoAdminService getReservationInfoAdminService() {
         return new ReservationInfoAdminService();
     }
 
-    public RoomInfoAdminService getRoomInfoAdminService(){
+    /**
+     * Gets the RoomInfoAdminService.
+     *
+     * @return the instance of RoomInfoAdminService.
+     *
+     * @see RoomInfoAdminService
+     */
+    public RoomInfoAdminService getRoomInfoAdminService() {
         return new RoomInfoAdminService();
     }
 
-    public RoomRequestAdminService getRoomRequestAdminService(){
+    /**
+     * Gets the RoomRequestAdminService.
+     *
+     * @return the instance of RoomRequestAdminService.
+     *
+     * @see RoomRequestAdminService
+     */
+    public RoomRequestAdminService getRoomRequestAdminService() {
         return new RoomRequestAdminService();
     }
 }

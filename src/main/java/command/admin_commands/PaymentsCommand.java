@@ -16,12 +16,25 @@ import static enums.Mappings.LOGIN_VIEW;
 import static enums.Mappings.PAYMENTS_ADMIN;
 import static enums.Role.ADMIN;
 
+/**
+ * Define an object used for executing payments command on PaymentsCommand.
+ *
+ * @see PaymentsCommand
+ */
 public class PaymentsCommand implements Command {
 
     private PaymentsAdminFacade facade = new PaymentsAdminFacade();
 
     private final Logger logger = Logger.getLogger(this.getClass());
 
+    /**
+     * Method to execute payments actions on HttpServletRequest and HttpServletResponse.
+     *
+     * @param request  The HttpServletRequest
+     * @param response The HttpServletResponse
+     * @return The string value representing mapping value.
+     * @see enums.Mappings
+     */
     @Override
     public String execute(HttpServletRequest request, HttpServletResponse response) {
 
@@ -48,9 +61,9 @@ public class PaymentsCommand implements Command {
                 request.setAttribute(ERRORS.getName(), NO_PAYMENTS.getName());
             }
             return PAYMENTS_ADMIN.getName();
-        }else {
+        } else {
             try {
-                throw new AccessException("Someone tried to access admin page with url:"+request.getRequestURI()+" without authentication");
+                throw new AccessException("Someone tried to access admin page with url:" + request.getRequestURI() + " without authentication");
             } catch (AccessException e) {
                 logger.error(e.getMessage(), e);
             }

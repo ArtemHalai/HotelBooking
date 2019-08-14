@@ -13,16 +13,38 @@ import java.util.List;
 
 import static enums.Attributes.PAGE_SIZE;
 
+/**
+ * Define an data access object used for executing reservation's requests to database using JDBC.
+ * This class is implementation of ReservationDao.
+ *
+ * @see ReservationDao
+ */
 public class ReservationDaoJDBC implements ReservationDao {
 
     private Connection connection = null;
     private PreparedStatement statement = null;
     private ResultSet resultSet = null;
 
+    /**
+     * Method to get connection.
+     *
+     * @return The Connection object from connection pool.
+     * @throws SQLException If sql exception occurred while processing this request.
+     * @see JDBCConnectionFactory
+     */
     private Connection getConnection() throws SQLException {
         return JDBCConnectionFactory.getInstance().getConnection();
     }
 
+    /**
+     * Method to add reservation using {@link #statement}, {@link #resultSet}.
+     *
+     * @param reservation The Reservation object.
+     * @param connection  The Connection object to connect to database.
+     * @return The int value representing id of added reservation.
+     * @throws SQLException If sql exception occurred while processing this request.
+     * @see Reservation
+     */
     @Override
     public int addReservation(Reservation reservation, Connection connection) throws SQLException {
         String insertReservation = "INSERT INTO reservations (date_in, date_out, room_id) VALUES (?,?,?)";
@@ -45,6 +67,17 @@ public class ReservationDaoJDBC implements ReservationDao {
         return reservationId;
     }
 
+    /**
+     * Method to add guest id to reservation using {@link #statement}, {@link #resultSet}.
+     *
+     * @param guest       The Guest object.
+     * @param reservation The Reservation object.
+     * @param connection  The Connection object to connect to database.
+     * @return The int value representing count of updated rows in database.
+     * @throws SQLException If sql exception occurred while processing this request.
+     * @see Reservation
+     * @see Guest
+     */
     @Override
     public int addGuestIdToReservation(Guest guest, Reservation reservation, Connection connection) throws SQLException {
         String addGuestId = "UPDATE reservations SET user_id = ? WHERE reservation_id = ?";
@@ -58,13 +91,21 @@ public class ReservationDaoJDBC implements ReservationDao {
         return count;
     }
 
+    /**
+     * Method to get all reservations from database using {@link #connection}, {@link #statement}, {@link #resultSet}.
+     *
+     * @param reservationsAdminDto The ReservationsAdminDto object.
+     * @return The ReservationsAdminDto object containing necessary data.
+     * @throws SQLException If sql exception occurred while processing this request.
+     * @see ReservationsAdminDto
+     */
     public ReservationsAdminDto getAllReservations(ReservationsAdminDto reservationsAdminDto) throws SQLException {
         String getAllReservations = "SELECT * FROM reservations LIMIT ? OFFSET ?";
         connection = getConnection();
         int count = count(connection);
         statement = connection.prepareStatement(getAllReservations);
         statement.setInt(1, Integer.parseInt(PAGE_SIZE.getName()));
-        statement.setInt(2, Integer.parseInt(PAGE_SIZE.getName()) * (reservationsAdminDto.getPage()-1));
+        statement.setInt(2, Integer.parseInt(PAGE_SIZE.getName()) * (reservationsAdminDto.getPage() - 1));
         resultSet = statement.executeQuery();
 
         List<Reservation> list = new ArrayList<>();
@@ -84,18 +125,32 @@ public class ReservationDaoJDBC implements ReservationDao {
         return reservationsAdminDto;
     }
 
+    /**
+     * Method to get count of all reservations in database using {@link #statement},
+     * {@link #resultSet}.
+     *
+     * @param connection The Connection object to connect to database.
+     * @return The int value representing amount of all reservations in database.
+     * @throws SQLException If sql exception occurred while processing this request.
+     */
     @Override
     public int count(Connection connection) throws SQLException {
         String count = "SELECT COUNT(*) AS total FROM reservations";
         statement = connection.prepareStatement(count);
         resultSet = statement.executeQuery();
         int total = 0;
-        if (resultSet.next()){
+        if (resultSet.next()) {
             total = resultSet.getInt("total");
         }
         return total;
     }
 
+    /**
+     * Method to close all connections that are open in this class {@link #connection}, {@link #statement},
+     * {@link #resultSet}.
+     *
+     * @throws SQLException If sql exception occurred while processing this request.
+     */
     public void close() throws SQLException {
         try {
             if (resultSet != null) {

@@ -24,6 +24,13 @@ import static enums.Errors.SOMETHING_WRONG;
 import static enums.Mappings.SUCCESSFUL;
 import static enums.Mappings.UNSUCCESSFUL;
 
+/**
+ * Define an object used for executing guest info command on BookingFacade, PaymentFacade, GuestInfoFacade.
+ *
+ * @see BookingFacade
+ * @see PaymentFacade
+ * @see GuestInfoFacade
+ */
 public class GuestInfoCommand implements Command {
 
     private GuestInfoFacade guestInfoFacade = new GuestInfoFacade();
@@ -32,6 +39,14 @@ public class GuestInfoCommand implements Command {
 
     private final Logger logger = Logger.getLogger(this.getClass());
 
+    /**
+     * Method to execute booking actions on HttpServletRequest and HttpServletResponse.
+     *
+     * @param req  The HttpServletRequest
+     * @param resp The HttpServletResponse
+     * @return The string value representing mapping value.
+     * @see enums.Mappings
+     */
     @Override
     public String execute(HttpServletRequest req, HttpServletResponse resp) {
         String name = req.getParameter(NAME.getName());
@@ -73,7 +88,7 @@ public class GuestInfoCommand implements Command {
             guest.setAge(Integer.parseInt(age));
             try {
                 guestId = guestInfoFacade.addGuest(guest);
-                logger.info("Guest with id "+guestId+" added in database");
+                logger.info("Guest with id " + guestId + " added in database");
             } catch (SQLException e) {
                 logger.error(e.getMessage(), e);
             }

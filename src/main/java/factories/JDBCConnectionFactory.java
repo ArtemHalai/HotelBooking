@@ -11,12 +11,26 @@ import javax.sql.DataSource;
 import java.sql.Connection;
 import java.sql.SQLException;
 
+/**
+ * A class that provides factory to get connection from connection pool for JDBC.
+ */
 public class JDBCConnectionFactory {
 
     private static GenericObjectPool genPool = null;
+
+    /**
+     * Static instance of this class.
+     */
     private static volatile JDBCConnectionFactory connectionFactory = null;
     private DataSource dataSource = null;
 
+    /**
+     * Private constructor to prevent
+     * the instantiation of this class directly.
+     * Initialize GenericObjectPool {@link #genPool}, set max amount of active connections to it.
+     * Initialize DataSource {@link #dataSource}.
+     * @see DBConfig
+     */
     private JDBCConnectionFactory() {
         try {
             Class.forName(DBConfig.getDriver());
@@ -32,6 +46,11 @@ public class JDBCConnectionFactory {
         }
     }
 
+    /**
+     * Gets the instance of this class.
+     *
+     * @return the instance of {@link #connectionFactory}.
+     */
     public static JDBCConnectionFactory getInstance() {
         if (connectionFactory == null) {
             synchronized (JDBCConnectionFactory.class) {
@@ -43,11 +62,12 @@ public class JDBCConnectionFactory {
         return connectionFactory;
     }
 
+    /**
+     * Gets the connection from dataSource.
+     *
+     * @return the connection from {@link #dataSource}.
+     */
     public Connection getConnection() throws SQLException {
         return dataSource.getConnection();
-    }
-
-    public static GenericObjectPool getConnectionPool() {
-        return genPool;
     }
 }

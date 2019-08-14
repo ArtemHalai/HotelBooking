@@ -16,12 +16,25 @@ import static enums.Mappings.GUESTS_ADMIN;
 import static enums.Mappings.LOGIN_VIEW;
 import static enums.Role.ADMIN;
 
+/**
+ * Define an object used for executing guests command on GuestsAdminFacade.
+ *
+ * @see GuestsAdminFacade
+ */
 public class GuestsCommand implements Command {
 
     private GuestsAdminFacade facade = new GuestsAdminFacade();
 
     private final Logger logger = Logger.getLogger(this.getClass());
 
+    /**
+     * Method to execute guests actions on HttpServletRequest and HttpServletResponse.
+     *
+     * @param request  The HttpServletRequest
+     * @param response The HttpServletResponse
+     * @return The string value representing mapping value.
+     * @see enums.Mappings
+     */
     @Override
     public String execute(HttpServletRequest request, HttpServletResponse response) {
         if (request.getSession().getAttribute(ADMIN.getName()) != null) {
@@ -47,9 +60,9 @@ public class GuestsCommand implements Command {
                 request.setAttribute(ERRORS.getName(), NO_GUESTS.getName());
             }
             return GUESTS_ADMIN.getName();
-        }else {
+        } else {
             try {
-                throw new AccessException("Someone tried to access admin page with url:"+request.getRequestURI()+" without authentication");
+                throw new AccessException("Someone tried to access admin page with url:" + request.getRequestURI() + " without authentication");
             } catch (AccessException e) {
                 logger.error(e.getMessage(), e);
             }

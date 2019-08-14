@@ -7,6 +7,12 @@ import javax.servlet.*;
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 
+/**
+ * Define a localization filter class.
+ * This class is implementation of Filter.
+ *
+ * @see Filter
+ */
 public class LocalizationFilter implements Filter {
     private static final String LANGUAGE = "language";
 
@@ -15,6 +21,18 @@ public class LocalizationFilter implements Filter {
 
     }
 
+    /**
+     * Method to get user's locale and set it to session.
+     * Invoke the next entity in the chain
+     * using the FilterChain object
+     * (<code>filterChain.doFilter()</code>).
+     *
+     * @param request     The ServletRequest object.
+     * @param response    The ServletResponse object.
+     * @param filterChain The FilterChain object.
+     * @throws IOException      If IO exception occurred while processing this request.
+     * @throws ServletException If servlet exception occurred while processing this request.
+     */
     @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain filterChain) throws IOException, ServletException {
         HttpServletRequest req = (HttpServletRequest) request;
@@ -23,7 +41,7 @@ public class LocalizationFilter implements Filter {
         String userLocale;
         if (locale != null) {
             userLocale = LocaleFactory.getInstance().getLocale(locale);
-        }else {
+        } else {
             userLocale = (String) req.getSession().getAttribute(LANGUAGE);
         }
 

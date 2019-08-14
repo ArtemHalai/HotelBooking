@@ -22,6 +22,12 @@ import static enums.Errors.NO_AVAILABLE_ROOM;
 import static enums.Mappings.GUEST_INFO;
 import static enums.Mappings.PAYMENT;
 
+/**
+ * Define an object used for executing booking command on BookingFacade and RoomRequestFacade.
+ *
+ * @see BookingFacade
+ * @see RoomRequestFacade
+ */
 public class BookingCommand implements Command {
 
     private BookingFacade bookingFacade = new BookingFacade();
@@ -29,6 +35,14 @@ public class BookingCommand implements Command {
 
     private final Logger logger = Logger.getLogger(this.getClass());
 
+    /**
+     * Method to execute booking actions on HttpServletRequest and HttpServletResponse.
+     *
+     * @param req  The HttpServletRequest
+     * @param resp The HttpServletResponse
+     * @return The string value representing mapping value.
+     * @see enums.Mappings
+     */
     @Override
     public String execute(HttpServletRequest req, HttpServletResponse resp) {
         String balcony = req.getParameter("balcony");

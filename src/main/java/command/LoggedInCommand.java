@@ -9,10 +9,21 @@ import static enums.Mappings.LOGGED_IN_VIEW;
 import static enums.Role.ADMIN;
 import static enums.Role.GUEST;
 
+/**
+ * Define an object used for executing logged in command.
+ */
 public class LoggedInCommand implements Command  {
 
     private final Logger logger = Logger.getLogger(this.getClass());
 
+    /**
+     * Method to execute logged in action on HttpServletRequest and HttpServletResponse.
+     *
+     * @param request The HttpServletRequest
+     * @param response The HttpServletResponse
+     * @return The string value representing mapping value.
+     * @see enums.Mappings
+     */
     @Override
     public String execute(HttpServletRequest request, HttpServletResponse response) {
 

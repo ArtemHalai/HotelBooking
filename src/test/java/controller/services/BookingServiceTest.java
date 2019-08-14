@@ -16,7 +16,10 @@ import java.sql.Connection;
 import java.sql.SQLException;
 import java.text.ParseException;
 
+import static org.junit.Assert.assertEquals;
+import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 @RunWith(MockitoJUnitRunner.class)
 public class BookingServiceTest {
@@ -43,19 +46,16 @@ public class BookingServiceTest {
         necessaryRoomDto.setDateOut("2019-07-23");
         necessaryRoomDto.setRoomTypeId("1");
         necessaryRoomDto.setPriceRange("0-300");
+        when(roomDao.getNecessaryRoom(necessaryRoomDto, connection)).thenReturn(new Room());
         service.booking(necessaryRoomDto, connection);
 
         verify(roomDao).getNecessaryRoom(necessaryRoomDto, connection);
 
-        Reservation reservation = new Reservation();
-        reservation.setDateIn(null);
-        reservation.setDateOut(null);
-        Room room = new Room();
-        room.setId(1);
-        room.setPrice(200);
+        int reservationId = 1;
+        when(reservationDao.addReservation(any(), any())).thenReturn(reservationId);
+        verify(reservationDao).addReservation(any(), any());
 
-        service.addReservation(reservation, connection);
-        verify(reservationDao).addReservation(reservation, connection);
+        assertEquals(reservationId, reservationDao.addReservation(new Reservation(), connection));
     }
 
     @Test

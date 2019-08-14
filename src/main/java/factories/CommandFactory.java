@@ -2,15 +2,20 @@ package factories;
 
 import command.*;
 import command.admin_commands.*;
-import enums.Mappings;
 
 import java.util.HashMap;
 import java.util.Map;
 
 import static enums.Mappings.*;
 
+/**
+ * A class that provides factory to get command implementation associated with given action.
+ */
 public class CommandFactory {
 
+    /**
+     * Map which stores the command implementations.
+     */
     private static final Map<String, Command> commandMap;
 
     static {
@@ -33,6 +38,12 @@ public class CommandFactory {
         commandMap.put(ROOMS_ADMIN.getName(), new RoomsCommand());
     }
 
+    /**
+     * Gets the command from commandMap}.
+     *
+     * @param action The action to identify which command implementation to use.
+     * @return the command implementation associated with given action from {@link #commandMap}.
+     */
     public static Command getCommand(String action) {
         return commandMap.getOrDefault(action, new HomeCommand());
     }

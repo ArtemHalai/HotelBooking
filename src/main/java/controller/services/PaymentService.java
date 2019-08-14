@@ -15,22 +15,49 @@ import java.sql.Date;
 import java.sql.SQLException;
 import java.text.SimpleDateFormat;
 
+/**
+ * A class that works with GuestDao, PaymentDao, ReservationDao.
+ *
+ * @see GuestDao
+ * @see PaymentDao
+ * @see ReservationDao
+ */
 public class PaymentService {
 
     private PaymentDao paymentDao;
     private GuestDao guestDao;
     private ReservationDao reservationDao;
 
+    /**
+     * Creates a PaymentService object and initialize {@link #guestDao}, {@link #paymentDao}, {@link #reservationDao}.
+     */
     public PaymentService() {
         this.paymentDao = DaoFactory.getInstance().getPaymentDao();
         this.guestDao = DaoFactory.getInstance().getGuestDao();
         this.reservationDao = DaoFactory.getInstance().getReservationDao();
     }
 
+    /**
+     * Method to add payment by using PaymentDao {@link #paymentDao}.
+     *
+     * @param paymentDto Object to pass params containing in it.
+     * @return <code>true</code> if the payment was added in database; <code>false</code> otherwise.
+     * @throws SQLException If sql exception occurred while processing this request.
+     * @see PaymentDto
+     */
     public boolean addPayment(PaymentDto paymentDto) throws SQLException {
         return paymentDao.addPayment(paymentDto);
     }
 
+    /**
+     * Method to add payment in transaction by using GuestDao, PaymentDao, ReservationDao {@link #guestDao},
+     * {@link #paymentDao}, {@link #reservationDao}.
+     *
+     * @param paymentTransactionDto Object to pass params containing in it.
+     * @return <code>true</code> if the payment was added in database; <code>false</code> otherwise.
+     * @throws SQLException If sql exception occurred while processing this request.
+     * @see PaymentTransactionDto
+     */
     public boolean addPaymentWithTransaction(PaymentTransactionDto paymentTransactionDto, Connection connection) throws SQLException {
 
         Guest guest = guestDao.getGuest(paymentTransactionDto, connection);
@@ -42,12 +69,12 @@ public class PaymentService {
 
             Payment payment = new Payment(paymentTransactionDto.getRoomId(),
                     paymentTransactionDto.getPrice(), d, guest.getGuestId());
-            boolean added = isAdded(connection, payment);
+            boolean added = paymentDao.addPaymentWithTransaction(payment, connection);
 
             if (added) {
                 Reservation reservation = new Reservation();
                 reservation.setId(paymentTransactionDto.getReservationId());
-                int count = getCount(connection, guest, reservation);
+                int count = reservationDao.addGuestIdToReservation(guest, reservation, connection);
 
                 if (count == 1) {
                     connection.commit();
@@ -60,13 +87,5 @@ public class PaymentService {
         connection.rollback();
         connection.close();
         return false;
-    }
-
-    public int getCount(Connection connection, Guest guest, Reservation reservation) throws SQLException {
-        return reservationDao.addGuestIdToReservation(guest, reservation, connection);
-    }
-
-    public boolean isAdded(Connection connection, Payment payment) throws SQLException {
-        return paymentDao.addPaymentWithTransaction(payment, connection);
     }
 }

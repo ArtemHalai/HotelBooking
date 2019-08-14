@@ -18,11 +18,24 @@ import static enums.Errors.USER_ALREADY_EXISTS;
 import static enums.Mappings.HOME;
 import static enums.Role.GUEST;
 
+/**
+ * Define an object used for executing registration command on RegistrationFacade.
+ *
+ * @see RegistrationFacade
+ */
 public class RegistrationCommand implements Command {
     private RegistrationFacade registrationFacade = new RegistrationFacade();
 
     private final Logger logger = Logger.getLogger(this.getClass());
 
+    /**
+     * Method to execute registration actions on HttpServletRequest and HttpServletResponse.
+     *
+     * @param req  The HttpServletRequest
+     * @param resp The HttpServletResponse
+     * @return The string value representing mapping value.
+     * @see enums.Mappings
+     */
     @Override
     public String execute(HttpServletRequest req, HttpServletResponse resp) {
         String name = req.getParameter(NAME.getName());

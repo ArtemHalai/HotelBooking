@@ -20,12 +20,24 @@ import static enums.Mappings.HOME;
 import static enums.Mappings.HOME_ADMIN;
 import static enums.Role.ADMIN;
 
-
-public class LoginCommand implements Command  {
+/**
+ * Define an object used for executing login command on LoginFacade.
+ *
+ * @see LoginFacade
+ */
+public class LoginCommand implements Command {
     private LoginFacade loginFacade = new LoginFacade();
 
     private final Logger logger = Logger.getLogger(this.getClass());
 
+    /**
+     * Method to execute login action on HttpServletRequest and HttpServletResponse.
+     *
+     * @param req  The HttpServletRequest
+     * @param resp The HttpServletResponse
+     * @return The string value representing mapping value.
+     * @see enums.Mappings
+     */
     @Override
     public String execute(HttpServletRequest req, HttpServletResponse resp) {
         String userName = req.getParameter(USERNAME.getName());

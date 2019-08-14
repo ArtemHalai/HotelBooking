@@ -14,16 +14,37 @@ import java.util.List;
 
 import static enums.Attributes.PAGE_SIZE;
 
+/**
+ * Define an data access object used for executing reservation's requests to database using JDBC.
+ * This class is implementation of RoomRequestDao.
+ *
+ * @see RoomRequestDao
+ */
 public class RoomRequestDaoJDBC implements RoomRequestDao {
 
     private Connection connection = null;
     private PreparedStatement statement = null;
     private ResultSet resultSet = null;
 
+    /**
+     * Method to get connection.
+     *
+     * @return The Connection object from connection pool.
+     * @throws SQLException If sql exception occurred while processing this request.
+     * @see JDBCConnectionFactory
+     */
     private Connection getConnection() throws SQLException {
         return JDBCConnectionFactory.getInstance().getConnection();
     }
 
+    /**
+     * Method to add room request using {@link #connection}, {@link #statement}, {@link #resultSet}.
+     *
+     * @param roomRequestDto The RoomRequestDto object.
+     * @return <code>true</code> if room request was added; <code>false</code> otherwise..
+     * @throws SQLException If sql exception occurred while processing this request.
+     * @see RoomRequestDto
+     */
     @Override
     public boolean addRequest(RoomRequestDto roomRequestDto) throws SQLException, ParseException {
 
@@ -63,6 +84,15 @@ public class RoomRequestDaoJDBC implements RoomRequestDao {
         return false;
     }
 
+    /**
+     * Method to get all room requests from database using {@link #connection},
+     * {@link #statement}, {@link #resultSet}.
+     *
+     * @param roomRequestsAdminDto The RoomRequestsAdminDto object.
+     * @return The RoomRequestsAdminDto object containing necessary data.
+     * @throws SQLException If sql exception occurred while processing this request.
+     * @see RoomRequestsAdminDto
+     */
     @Override
     public RoomRequestsAdminDto getAllRequests(RoomRequestsAdminDto roomRequestsAdminDto) throws SQLException {
         String getAllRequests = "SELECT * FROM room_requests LIMIT ? OFFSET ?";
@@ -70,7 +100,7 @@ public class RoomRequestDaoJDBC implements RoomRequestDao {
         int count = count(connection);
         statement = connection.prepareStatement(getAllRequests);
         statement.setInt(1, Integer.parseInt(PAGE_SIZE.getName()));
-        statement.setInt(2, Integer.parseInt(PAGE_SIZE.getName()) * (roomRequestsAdminDto.getPage()-1));
+        statement.setInt(2, Integer.parseInt(PAGE_SIZE.getName()) * (roomRequestsAdminDto.getPage() - 1));
         resultSet = statement.executeQuery();
 
         List<RoomRequest> list = new ArrayList<>();
@@ -89,18 +119,31 @@ public class RoomRequestDaoJDBC implements RoomRequestDao {
         return roomRequestsAdminDto;
     }
 
+    /**
+     * Method to get count of all room requests in database using {@link #statement}, {@link #resultSet}.
+     *
+     * @param connection The Connection object to connect to database.
+     * @return The int value representing amount of all room requests in database.
+     * @throws SQLException If sql exception occurred while processing this request.
+     */
     @Override
     public int count(Connection connection) throws SQLException {
         String count = "SELECT COUNT(*) AS total FROM room_requests";
         statement = connection.prepareStatement(count);
         resultSet = statement.executeQuery();
         int total = 0;
-        if (resultSet.next()){
+        if (resultSet.next()) {
             total = resultSet.getInt("total");
         }
         return total;
     }
 
+    /**
+     * Method to close all connections that are open in this class {@link #connection}, {@link #statement},
+     * {@link #resultSet}.
+     *
+     * @throws SQLException If sql exception occurred while processing this request.
+     */
     public void close() throws SQLException {
         try {
             if (resultSet != null) {

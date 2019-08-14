@@ -1,7 +1,6 @@
 package controller.servlets;
 
 import command.Command;
-import enums.Mappings;
 import factories.CommandFactory;
 
 import javax.servlet.ServletException;
@@ -13,13 +12,37 @@ import java.io.IOException;
 import static enums.Mappings.HOME;
 import static enums.Mappings.REGISTRATION_PAGE;
 
+/**
+ * Define registration servlet class which extends HttpServlet class.
+ *
+ * @see HttpServlet
+ */
 public class RegistrationServlet extends HttpServlet {
 
+    /**
+     * This method called by the server to allow a servlet to handle a GET request.
+     *
+     * @param req  The HttpServletRequest object.
+     * @param resp The HttpServletResponse object.
+     * @throws IOException      If IO exception occurred while processing this request.
+     * @throws ServletException If servlet exception occurred while processing this request.
+     */
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         req.getRequestDispatcher(REGISTRATION_PAGE.getName()).forward(req, resp);
     }
 
+    /**
+     * This method called by the server to allow a servlet to handle a POST request.
+     * Gets request URI and delegate action to CommandFactory to define which command to use for this request.
+     * Then execute command and define what to do further.
+     *
+     * @param req  The HttpServletRequest object.
+     * @param resp The HttpServletResponse object.
+     * @throws IOException      If IO exception occurred while processing this request.
+     * @throws ServletException If servlet exception occurred while processing this request.
+     * @see CommandFactory
+     */
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String action = req.getRequestURI()

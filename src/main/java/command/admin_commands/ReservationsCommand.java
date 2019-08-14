@@ -16,11 +16,24 @@ import static enums.Mappings.LOGIN_VIEW;
 import static enums.Mappings.RESERVATIONS_ADMIN;
 import static enums.Role.ADMIN;
 
+/**
+ * Define an object used for executing reservations command on ReservationsCommand.
+ *
+ * @see ReservationsCommand
+ */
 public class ReservationsCommand implements Command {
 
     private ReservationsAdminFacade facade = new ReservationsAdminFacade();
     private final Logger logger = Logger.getLogger(this.getClass());
 
+    /**
+     * Method to execute reservations actions on HttpServletRequest and HttpServletResponse.
+     *
+     * @param request  The HttpServletRequest
+     * @param response The HttpServletResponse
+     * @return The string value representing mapping value.
+     * @see enums.Mappings
+     */
     @Override
     public String execute(HttpServletRequest request, HttpServletResponse response) {
         if (request.getSession().getAttribute(ADMIN.getName()) != null) {
@@ -48,7 +61,7 @@ public class ReservationsCommand implements Command {
             return RESERVATIONS_ADMIN.getName();
         } else {
             try {
-                throw new AccessException("Someone tried to access admin page with url:"+request.getRequestURI()+" without authentication");
+                throw new AccessException("Someone tried to access admin page with url:" + request.getRequestURI() + " without authentication");
             } catch (AccessException e) {
                 logger.error(e.getMessage(), e);
             }

@@ -5,6 +5,7 @@ import factories.JDBCConnectionFactory;
 import model.dto.NecessaryRoomDto;
 import model.dto.RoomsAdminDto;
 import model.entity.Room;
+import model.entity.RoomType;
 
 import java.sql.*;
 import java.text.ParseException;
@@ -14,16 +15,38 @@ import java.util.List;
 
 import static enums.Attributes.PAGE_SIZE;
 
+/**
+ * Define an data access object used for executing reservation's requests to database using JDBC.
+ * This class is implementation of RoomDao.
+ *
+ * @see RoomDao
+ */
 public class RoomDaoJDBC implements RoomDao {
 
     private Connection connection = null;
     private PreparedStatement statement = null;
     private ResultSet resultSet = null;
 
+    /**
+     * Method to get connection.
+     *
+     * @return The Connection object from connection pool.
+     * @throws SQLException If sql exception occurred while processing this request.
+     * @see JDBCConnectionFactory
+     */
     private Connection getConnection() throws SQLException {
         return JDBCConnectionFactory.getInstance().getConnection();
     }
 
+    /**
+     * Method to find room in database with given params using {@link #statement}, {@link #resultSet}.
+     *
+     * @param necessaryRoomDto The NecessaryRoomDto object containing params of necessary room.
+     * @param connection       The Connection object to connect to database.
+     * @return The Room object.
+     * @throws SQLException If sql exception occurred while processing this request.
+     * @see NecessaryRoomDto
+     */
     @Override
     public Room getNecessaryRoom(NecessaryRoomDto necessaryRoomDto, Connection connection) throws SQLException, ParseException {
         boolean smokeBool = false;
@@ -67,15 +90,23 @@ public class RoomDaoJDBC implements RoomDao {
         java.sql.Date dateFrom = new java.sql.Date(checkIn.getTime());
         java.sql.Date dateTo = new java.sql.Date(checkOut.getTime());
 
-        String getNecessaryRoom = "SELECT * FROM rooms LEFT JOIN reservations ON rooms.room_id = reservations.room_id " +
-                "WHERE rooms.balcony = ?" +
-                " AND rooms.smoke = ?" +
-                " AND rooms.room_type_id = ?" +
-                " AND rooms.price BETWEEN ?" +
-                " AND ? AND (? <reservations.date_in" +
-                " AND ? <=reservations.date_in AND ? >=reservations.date_out AND ?>reservations.date_out AND ? NOT BETWEEN " +
-                "reservations.date_in AND reservations.date_out AND ? NOT BETWEEN reservations.date_in AND reservations.date_out" +
-                " OR reservations.room_id IS NULL)";
+//        String getNecessaryRoom = "SELECT * FROM rooms LEFT JOIN reservations ON rooms.room_id = reservations.room_id " +
+//                "WHERE rooms.balcony = ?" +
+//                " AND rooms.smoke = ?" +
+//                " AND rooms.room_type_id = ?" +
+//                " AND rooms.price BETWEEN ?" +
+//                " AND ? AND (? <reservations.date_in" +
+//                " AND ? <=reservations.date_in AND ? >=reservations.date_out AND ?>reservations.date_out AND ? NOT BETWEEN " +
+//                "reservations.date_in AND reservations.date_out AND ? NOT BETWEEN reservations.date_in AND reservations.date_out" +
+//                " OR reservations.room_id IS NULL)";
+
+        String getNecessaryRoom = "SELECT * FROM rooms WHERE rooms.balcony = ? AND " +
+                " rooms.smoke = ? " +
+                "AND rooms.room_type_id = ?" +
+                " AND rooms.price BETWEEN ? AND ? AND " +
+                "rooms.room_id  NOT IN (SELECT reservations.room_id FROM " +
+                "reservations WHERE reservations.date_in BETWEEN ? AND ? OR reservations.date_out BETWEEN ? AND ? OR ? BETWEEN " +
+                "reservations.date_in AND reservations.date_out OR ? BETWEEN reservations.date_in AND reservations.date_out)";
 
         statement = connection.prepareStatement(getNecessaryRoom);
         statement.setBoolean(1, balconyBool);
@@ -105,6 +136,14 @@ public class RoomDaoJDBC implements RoomDao {
         return room;
     }
 
+    /**
+     * Method to get all rooms from database using {@link #connection}, {@link #statement}, {@link #resultSet}.
+     *
+     * @param roomsAdminDto The RoomsAdminDto object.
+     * @return The RoomsAdminDto object containing necessary data.
+     * @throws SQLException If sql exception occurred while processing this request.
+     * @see RoomsAdminDto
+     */
     public RoomsAdminDto getAllRooms(RoomsAdminDto roomsAdminDto) throws SQLException {
         String getAllRooms = "SELECT * FROM rooms LIMIT ? OFFSET ?";
         connection = getConnection();
@@ -122,8 +161,10 @@ public class RoomDaoJDBC implements RoomDao {
             boolean smoke = resultSet.getBoolean("smoke");
             int roomTypeId = resultSet.getInt("room_type_id");
             double price = resultSet.getDouble("price");
+            RoomType roomType = new RoomType();
+            roomType.setId(roomTypeId);
 
-            Room room = new Room(id, number, balcony, smoke, roomTypeId, price);
+            Room room = new Room(id, number, balcony, smoke, roomType, price);
             list.add(room);
         }
         roomsAdminDto.setList(list);
@@ -132,6 +173,13 @@ public class RoomDaoJDBC implements RoomDao {
         return roomsAdminDto;
     }
 
+    /**
+     * Method to get count of all rooms in database using {@link #statement}, {@link #resultSet}.
+     *
+     * @param connection The Connection object to connect to database.
+     * @return The int value representing amount of all rooms in database.
+     * @throws SQLException If sql exception occurred while processing this request.
+     */
     @Override
     public int count(Connection connection) throws SQLException {
         String count = "SELECT COUNT(*) AS total FROM rooms";
@@ -144,6 +192,12 @@ public class RoomDaoJDBC implements RoomDao {
         return total;
     }
 
+    /**
+     * Method to close all connections that are open in this class {@link #connection}, {@link #statement},
+     * {@link #resultSet}.
+     *
+     * @throws SQLException If sql exception occurred while processing this request.
+     */
     public void close() throws SQLException {
         try {
             if (resultSet != null) {

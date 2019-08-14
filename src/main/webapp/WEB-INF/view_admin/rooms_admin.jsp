@@ -1,4 +1,5 @@
 <%@ page pageEncoding="UTF-8" %>
+<%@ page import="model.entity.RoomType" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <fmt:setLocale value="${language}" />
@@ -66,7 +67,7 @@
     			<td>${r.balcony}</td>
     			<td>${r.smoke}</td>
     			<td>${r.price}</td>
-    			<td>${r.roomTypeId}</td>
+    			<td>${r.roomTypeId.id}</td>
     		</tr>
     	</c:forEach>
     	<%}else{%>

@@ -16,16 +16,35 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.concurrent.TimeUnit;
 
+/**
+ * A class that works with ReservationDao, RoomDao.
+ *
+ * @see ReservationDao
+ * @see RoomDao
+ */
 public class BookingService {
 
     private ReservationDao reservationDao;
     private RoomDao roomDao;
 
+    /**
+     * Creates a BookingService object and initialize {@link #reservationDao}, {@link #roomDao}.
+     */
     public BookingService() {
         this.reservationDao = DaoFactory.getInstance().getReservationDao();
         this.roomDao = DaoFactory.getInstance().getRoomDao();
-}
+    }
 
+    /**
+     * Method to create booking by using ReservationDao {@link #reservationDao} and RoomDao {@link #roomDao}.
+     *
+     * @param necessaryRoomDto Object to pass params containing in it.
+     * @return Object of BookingApprovementDto.
+     * @throws SQLException   If sql exception occurred while processing this request.
+     * @throws ParseException If parse exception occurred while processing this request.
+     * @see BookingApprovementDTO
+     * @see NecessaryRoomDto
+     */
     public BookingApprovementDTO booking(NecessaryRoomDto necessaryRoomDto, Connection connection) throws SQLException, ParseException {
 
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
@@ -40,9 +59,8 @@ public class BookingService {
         Room room = roomDao.getNecessaryRoom(necessaryRoomDto, connection);
 
         if (room != null) {
-
             Reservation reservation = new Reservation(dateFrom, dateTo, room.getId());
-            int reservationId = addReservation(reservation, connection);
+            int reservationId = reservationDao.addReservation(reservation, connection);
 
             bookingApprovementDTO = new BookingApprovementDTO(reservationId, room.getId(),
                     room.getPrice() * TimeUnit.DAYS.convert(dateTo.getTime() - dateFrom.getTime(), TimeUnit.MILLISECONDS));
@@ -56,10 +74,17 @@ public class BookingService {
         return bookingApprovementDTO;
     }
 
-    public int addReservation(Reservation reservation, Connection connection) throws SQLException {
-        return reservationDao.addReservation( reservation, connection);
-    }
-
+    /**
+     * Method to add guest id to created reservation by using ReservationDao {@link #reservationDao}.
+     *
+     * @param guest       Object to pass params containing in it.
+     * @param reservation Object to pass params containing in it.
+     * @param connection  Connection to connect to database.
+     * @return boolean value which says if adding was successful or not.
+     * @throws SQLException If sql exception occurred while processing this request.
+     * @see Guest
+     * @see Reservation
+     */
     public boolean addGuestIdToReservation(Guest guest, Reservation reservation, Connection connection) throws SQLException {
 
         if (reservationDao.addGuestIdToReservation(guest, reservation, connection) == 1) {

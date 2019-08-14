@@ -12,8 +12,24 @@ import java.io.IOException;
 import static enums.Mappings.LOGIN_VIEW;
 import static enums.Mappings.PAYMENTS_ADMIN_PAGE;
 
+/**
+ * Define payments admin servlet class which extends HttpServlet class.
+ *
+ * @see HttpServlet
+ */
 public class PaymentsAdminServlet extends HttpServlet {
 
+    /**
+     * This method called by the server to allow a servlet to handle a GET request.
+     * Gets request URI and delegate action to CommandFactory to define which command to use for this request.
+     * Then execute command and define what to do further.
+     *
+     * @param req  The HttpServletRequest object.
+     * @param resp The HttpServletResponse object.
+     * @throws IOException      If IO exception occurred while processing this request.
+     * @throws ServletException If servlet exception occurred while processing this request.
+     * @see CommandFactory
+     */
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 
