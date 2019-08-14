@@ -240,3 +240,23 @@ exceptions.NoAvailableRoomException: No available room with request parameter: d
 2019-08-12 23:48:54 INFO  LoginCommand:52 - User is logged in with role: ADMIN and username: artemadmin
 2019-08-12 23:55:09 INFO  LoginCommand:52 - User is logged in with role: ADMIN and username: artemadmin
 2019-08-12 23:56:07 INFO  LoginCommand:52 - User is logged in with role: ADMIN and username: artemadmin
+2019-08-14 13:51:35 INFO  LoginCommand:64 - User is logged in with role: GUEST and username: artemguest
+2019-08-14 13:51:35 INFO  LogFilter:46 - Username: artemguest
+2019-08-14 13:51:36 INFO  LogFilter:46 - Username: artemguest
+2019-08-14 13:51:37 INFO  LogFilter:46 - Username: artemguest
+2019-08-14 13:51:41 INFO  LogFilter:46 - Username: artemguest
+2019-08-14 13:51:41 INFO  BookingCommand:55 - User is booking with request parameter: date in - 2019-08-17, date out - 2019-08-18 and room type id is Одноместный-1
+2019-08-14 13:51:41 INFO  BookingCommand:73 - Reservation with id 64 added in database
+2019-08-14 13:51:41 INFO  LogFilter:46 - Username: artemguest
+2019-08-14 13:51:50 INFO  LogFilter:46 - Username: artemguest
+2019-08-14 13:51:50 INFO  PaymentCommand:79 - Payment was successful
+2019-08-14 13:51:50 INFO  LogFilter:46 - Username: artemguest
+2019-08-14 13:51:51 INFO  LogFilter:46 - Username: artemguest
+2019-08-14 13:51:52 INFO  LogFilter:46 - Username: artemguest
+2019-08-14 13:51:54 INFO  LogFilter:46 - Username: artemguest
+2019-08-14 13:51:54 INFO  LogFilter:46 - Username: artemguest
+2019-08-14 13:51:54 INFO  LoggedInCommand:34 - Guest with username: artemguest is logging out
+2019-08-14 13:51:55 INFO  LogFilter:46 - Username: artemguest
+2019-08-14 13:52:14 INFO  BookingCommand:55 - User is booking with request parameter: date in - 2019-08-17, date out - 2019-08-18 and room type id is Одномісний
+2019-08-14 13:52:14 INFO  BookingCommand:73 - Reservation with id 65 added in database
+2019-08-14 13:53:39 INFO  GuestInfoCommand:91 - Guest with id 18 added in database
