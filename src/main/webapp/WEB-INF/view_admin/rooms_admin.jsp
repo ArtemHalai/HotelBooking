@@ -1,4 +1,3 @@
-
 <%@ page pageEncoding="UTF-8" %>
 <%@ page import="model.entity.RoomType" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
@@ -140,7 +139,5 @@
 <script>
     <%@include file="../../js/bootstrap/bootstrap_script_3.js" %>
 </script>
-</body>
-</html>
 </body>
 </html>

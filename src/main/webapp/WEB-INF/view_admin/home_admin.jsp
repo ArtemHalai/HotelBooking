@@ -1,15 +1,17 @@
-
-
 <%@ page pageEncoding="UTF-8" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
-<fmt:setLocale value="${language}" />
-<fmt:setBundle basename="admin" />
+<fmt:setLocale value="${language}"/>
+<fmt:setBundle basename="admin"/>
 <html lang="${language}">
 <head>
-   <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <style><%@include file="../../css/home_admin.css"%></style>
-    <style><%@include file="../../css/bootstrap/bs.css"%></style>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <style>
+        <%@include file="../../css/home_admin.css" %>
+    </style>
+    <style>
+        <%@include file="../../css/bootstrap/bs.css" %>
+    </style>
     <title><fmt:message key="home"/></title>
 </head>
 <body>
@@ -39,12 +41,12 @@
                 <a href="room_requests_admin" class="nav-link" id="room_requests"><fmt:message key="room_requests"/></a>
             </li>
             <li class="nav-item">
-            <a href="login" class="nav-link" id="login">
-            <% if(session.getAttribute("ADMIN")!=null){
-                %><fmt:message key="logout"/><%
-                }else{%>
-                <fmt:message key="login"/>
-                <%}%></a>
+                <a href="login" class="nav-link" id="login">
+                    <% if (session.getAttribute("ADMIN") != null) {
+                    %><fmt:message key="logout"/><%
+                } else {%>
+                    <fmt:message key="login"/>
+                    <%}%></a>
             </li>
         </ul>
     </div>
@@ -53,8 +55,14 @@
 
 </div>
 </div>
-<script><%@include file="../../js/bootstrap/bootstrap_script_1.js"%></script>
-<script><%@include file="../../js/bootstrap/bootstrap_script_2.js"%></script>
-<script><%@include file="../../js/bootstrap/bootstrap_script_3.js"%></script>
+<script>
+    <%@include file="../../js/bootstrap/bootstrap_script_1.js" %>
+</script>
+<script>
+    <%@include file="../../js/bootstrap/bootstrap_script_2.js" %>
+</script>
+<script>
+    <%@include file="../../js/bootstrap/bootstrap_script_3.js" %>
+</script>
 </body>
 </html>

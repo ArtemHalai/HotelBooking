@@ -1,17 +1,21 @@
 <%@ page pageEncoding="UTF-8" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
-<fmt:setLocale value="${language}" />
-<fmt:setBundle basename="admin" />
+<fmt:setLocale value="${language}"/>
+<fmt:setBundle basename="admin"/>
 <html lang="${language}">
 <head>
-<meta name="viewport" content="width=device-width, initial-scale=1" />
-<style><%@include file="../../css/admin.css"%></style>
-<style><%@include file="../../css/bootstrap/bs.css"%></style>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <style>
+        <%@include file="../../css/admin.css" %>
+    </style>
+    <style>
+        <%@include file="../../css/bootstrap/bs.css" %>
+    </style>
     <title>Payments</title>
 </head>
 <body>
-<% String errors = (String)request.getAttribute("errors");%>
+<% String errors = (String) request.getAttribute("errors");%>
 <nav class=" anim adminnav navbar navbar-expand-md bg-dark navbar-dark">
     <a class="navbar-brand" href="home"><fmt:message key="welcome"/></a>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#collapsibleNavbar">
@@ -38,12 +42,12 @@
                 <a href="room_requests_admin" class="nav-link" id="room_requests"><fmt:message key="room_requests"/></a>
             </li>
             <li class="nav-item">
-               <a href="login" class="nav-link" id="login">
-                           <% if(session.getAttribute("ADMIN")!=null){
-                               %><fmt:message key="logout"/><%
-                               }else{%>
-                               <fmt:message key="login"/>
-                               <%}%></a>
+                <a href="login" class="nav-link" id="login">
+                    <% if (session.getAttribute("ADMIN") != null) {
+                    %><fmt:message key="logout"/><%
+                } else {%>
+                    <fmt:message key="login"/>
+                    <%}%></a>
             </li>
             <input name="count" id="count" type="hidden" value=${count}>
         </ul>
@@ -51,69 +55,74 @@
 </nav>
 <div class="parent">
     <div class="child1">
-    <table class="table">
-    <thead>
-    <td><fmt:message key="id"/></td>
-        <td><fmt:message key="roomId"/></td>
-        <td><fmt:message key="amount"/></td>
-        <td><fmt:message key="guestId"/></td>
-        <td><fmt:message key="date"/></td>
-    </thead>
-     <% if(errors == null){%>
-    <c:forEach items="${payments}" var="p">
-    		<tr>
-    			<td>${p.id}</td>
-    			<td>${p.roomId}</td>
-    			<td>${p.amount}</td>
-    			<td>${p.guestId}</td>
-    			<td>${p.paymentDate}</td>
-    		</tr>
-    	</c:forEach>
-    	<%}else{%>
-            	<tr class="error"><fmt:message key="noPayments"/></tr>
-            	<%}%>
-    	<tfoot>
-         <td><fmt:message key="id"/></td>
-                 <td><fmt:message key="roomId"/></td>
-                 <td><fmt:message key="amount"/></td>
-                 <td><fmt:message key="guestId"/></td>
-                 <td><fmt:message key="date"/></td>
+        <table class="table">
+            <thead>
+            <td><fmt:message key="id"/></td>
+            <td><fmt:message key="roomId"/></td>
+            <td><fmt:message key="amount"/></td>
+            <td><fmt:message key="guestId"/></td>
+            <td><fmt:message key="date"/></td>
+            </thead>
+            <% if (errors == null) {%>
+            <c:forEach items="${payments}" var="p">
+                <tr>
+                    <td>${p.id}</td>
+                    <td>${p.roomId}</td>
+                    <td>${p.amount}</td>
+                    <td>${p.guestId}</td>
+                    <td>${p.paymentDate}</td>
+                </tr>
+            </c:forEach>
+            <%} else {%>
+            <tr class="error"><fmt:message key="noPayments"/></tr>
+            <%}%>
+            <tfoot>
+            <td><fmt:message key="id"/></td>
+            <td><fmt:message key="roomId"/></td>
+            <td><fmt:message key="amount"/></td>
+            <td><fmt:message key="guestId"/></td>
+            <td><fmt:message key="date"/></td>
             </tfoot>
-    </table>
+        </table>
     </div>
     <div class="child2">
-       <div class="prevNextContainer">
-                   <a <c:choose>
-                       <c:when test="${page=='1'}">
-                           style="visibility:hidden;"
-                       </c:when>
-                       <c:otherwise>
-                           style="visibility:visible;font-size:1.5em; color:white;font-weight:bold;"
-                       </c:otherwise>
-                   </c:choose>
-                               <%int p = (Integer)request.getAttribute("page")-1;%>href="payments_admin?page=<%=p%>" class="btn"
-                               id="btn_prev"><fmt:message key="prev"/></a>
-                   <span style="font-size:1.3em; color:white;font-weight:bold;" class="pages" id="page">${page}</span>
-                   <a  <c:choose>
-                       <c:when test="${count=='0'}">
-                           style="visibility:hidden;"
-                       </c:when>
-                       <c:when test="${count<=page*'10'}">
-                           style="visibility:hidden;"
-                       </c:when>
-                       <c:otherwise>
-                           style="visibility:visible;font-size:1.5em; color:white;font-weight:bold;"
-                       </c:otherwise>
-                   </c:choose>
-                               <% int p1 = (Integer) request.getAttribute("page") + 1;%>href="payments_admin?page=<%=p1%>"
-                               class="btn" id="btn_next"><fmt:message key="next"/></a>
-               </div>
+        <div class="prevNextContainer">
+            <a <c:choose>
+                <c:when test="${page=='1'}">
+                    style="visibility:hidden;"
+                </c:when>
+                <c:otherwise>
+                    style="visibility:visible;font-size:1.5em; color:white;font-weight:bold;"
+                </c:otherwise>
+            </c:choose>
+                        <%int p = (Integer)request.getAttribute("page")-1;%>href="payments_admin?page=<%=p%>"
+                        class="btn"
+                        id="btn_prev"><fmt:message key="prev"/></a>
+            <span style="font-size:1.3em; color:white;font-weight:bold;" class="pages" id="page">${page}</span>
+            <a  <c:choose>
+                <c:when test="${count=='0'}">
+                    style="visibility:hidden;"
+                </c:when>
+                <c:when test="${count<=page*'10'}">
+                    style="visibility:hidden;"
+                </c:when>
+                <c:otherwise>
+                    style="visibility:visible;font-size:1.5em; color:white;font-weight:bold;"
+                </c:otherwise>
+            </c:choose>
+                        <% int p1 = (Integer) request.getAttribute("page") + 1;%>href="payments_admin?page=<%=p1%>"
+                        class="btn" id="btn_next"><fmt:message key="next"/></a>
+        </div>
     </div>
 </div>
-<script><%@include file="../../js/bootstrap/bootstrap_script_1.js"%></script>
-<script><%@include file="../../js/bootstrap/bootstrap_script_2.js"%></script>
-<script><%@include file="../../js/bootstrap/bootstrap_script_3.js"%></script>
-</body>
-</html>
+<script>
+    <%@include file="../../js/bootstrap/bootstrap_script_1.js" %>
+</script>
+<script>
+    <%@include file="../../js/bootstrap/bootstrap_script_2.js" %>
+</script>
+<script>
+    <%@include file="../../js/bootstrap/bootstrap_script_3.js" %>
+</script>
 </body>
 </html>

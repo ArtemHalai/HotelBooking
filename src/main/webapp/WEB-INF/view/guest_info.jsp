@@ -19,15 +19,15 @@
 <div class="bg-image"></div>
 <div class="main">
     <% Properties properties = new Properties();
-                   InputStream inputStream = getClass()
-                           .getClassLoader().getResourceAsStream("mapping.properties");
-                   try {
-                       properties.load(inputStream);
-                   } catch (IOException e) {
-                       e.printStackTrace();
-                   }
-                   String h = properties.getProperty("home");
-    Map<String, String> errors = (Map<String, String>) session.getAttribute("errors");
+        InputStream inputStream = getClass()
+                .getClassLoader().getResourceAsStream("mapping.properties");
+        try {
+            properties.load(inputStream);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        String h = properties.getProperty("home");
+        Map<String, String> errors = (Map<String, String>) session.getAttribute("errors");
 
         String name = null;
         String surname = null;
@@ -78,13 +78,14 @@
         <input name="reservationId" type="hidden" value=${reservationId}>
         <input class="uname" required id="surname" name="surname" type="text" align="center" placeholder=<fmt:message
                 key="info.surname"/>>
-                <label for="age">
-                                                <% if (age!=null){
-                                                            %><fmt:message key="info.error.age"/><%
-                                                        }
-                                                        %>
-                                                </label>
-        <input class="uname" id="age" required name="age" type="text" align="center" placeholder=<fmt:message key="info.age"/>>
+        <label for="age">
+            <% if (age != null) {
+            %><fmt:message key="info.error.age"/><%
+            }
+        %>
+        </label>
+        <input class="uname" id="age" required name="age" type="text" align="center" placeholder=<fmt:message
+                key="info.age"/>>
         <label for="phoneNumber">
             <% if (phoneNumber != null) {
             %><fmt:message key="info.error.phoneNumber"/><%
