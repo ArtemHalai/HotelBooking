@@ -90,23 +90,13 @@ public class RoomDaoJDBC implements RoomDao {
         java.sql.Date dateFrom = new java.sql.Date(checkIn.getTime());
         java.sql.Date dateTo = new java.sql.Date(checkOut.getTime());
 
-//        String getNecessaryRoom = "SELECT * FROM rooms LEFT JOIN reservations ON rooms.room_id = reservations.room_id " +
-//                "WHERE rooms.balcony = ?" +
-//                " AND rooms.smoke = ?" +
-//                " AND rooms.room_type_id = ?" +
-//                " AND rooms.price BETWEEN ?" +
-//                " AND ? AND (? <reservations.date_in" +
-//                " AND ? <=reservations.date_in AND ? >=reservations.date_out AND ?>reservations.date_out AND ? NOT BETWEEN " +
-//                "reservations.date_in AND reservations.date_out AND ? NOT BETWEEN reservations.date_in AND reservations.date_out" +
-//                " OR reservations.room_id IS NULL)";
-
-        String getNecessaryRoom = "SELECT * FROM rooms WHERE rooms.balcony = ? AND " +
-                " rooms.smoke = ? " +
-                "AND rooms.room_type_id = ?" +
-                " AND rooms.price BETWEEN ? AND ? AND " +
-                "rooms.room_id  NOT IN (SELECT reservations.room_id FROM " +
-                "reservations WHERE reservations.date_in BETWEEN ? AND ? OR reservations.date_out BETWEEN ? AND ? OR ? BETWEEN " +
-                "reservations.date_in AND reservations.date_out OR ? BETWEEN reservations.date_in AND reservations.date_out)";
+        String getNecessaryRoom = "SELECT * FROM rooms LEFT JOIN reservations ON rooms.room_id = reservations.room_id " +
+                "WHERE rooms.balcony = ?" +
+                " AND rooms.smoke = ?" +
+                " AND rooms.room_type_id = ?" +
+                " AND rooms.price BETWEEN ?" +
+                " AND ? AND ((?< reservations.date_in AND ?<=reservations.date_in) OR " +
+                " (? >= reservations.date_out  AND ?> reservations.date_out) OR reservations.date_in IS NULL)";
 
         statement = connection.prepareStatement(getNecessaryRoom);
         statement.setBoolean(1, balconyBool);
@@ -118,8 +108,6 @@ public class RoomDaoJDBC implements RoomDao {
         statement.setDate(7, dateTo);
         statement.setDate(8, dateFrom);
         statement.setDate(9, dateTo);
-        statement.setDate(10, dateFrom);
-        statement.setDate(11, dateTo);
 
         resultSet = statement.executeQuery();
 

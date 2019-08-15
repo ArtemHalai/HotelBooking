@@ -14,6 +14,7 @@ user_id int  auto_increment primary key,
  phone varchar(20),
 passport_id varchar(20));
 
+//Inserting admin
 INSERT INTO users(name, surname, username, role, password, age, phone, passport_id) VALUES ("Artem","Halai", "artemadmin","ADMIN",
 "12345678",24, "+380505873651", "ME123456");
 
@@ -99,3 +100,18 @@ insert into rooms(number,balcony, smoke, price,room_type_id) values (032,true,tr
 insert into rooms(number,balcony, smoke, price,room_type_id) values (033,true,true,289.99,3);
 insert into rooms(number,balcony, smoke, price,room_type_id) values (034,false,true,289.99,3);
 insert into rooms(number,balcony, smoke, price,room_type_id) values (035,true,true,289.99,3);
+insert into rooms(number,balcony, smoke, price,room_type_id) values (036,true,true,289.99,3);
+insert into rooms(number,balcony, smoke, price,room_type_id) values (037,false,false,289.99,3);
+insert into rooms(number,balcony, smoke, price,room_type_id) values (038,true,true,289.99,3);
+insert into rooms(number,balcony, smoke, price,room_type_id) values (039,true,false,289.99,3);
+insert into rooms(number,balcony, smoke, price,room_type_id) values (040,true,true,149.99,2);
+insert into rooms(number,balcony, smoke, price,room_type_id) values (041,true,true,289.99,3);
+insert into rooms(number,balcony, smoke, price,room_type_id) values (042,false,false,89.99,1);
+insert into rooms(number,balcony, smoke, price,room_type_id) values (043,true,true,289.99,3);
+insert into rooms(number,balcony, smoke, price,room_type_id) values (044,false,true,289.99,3);
+insert into rooms(number,balcony, smoke, price,room_type_id) values (045,true,true,189.99,2);
+insert into rooms(number,balcony, smoke, price,room_type_id) values (046,true,true,289.99,3);
+insert into rooms(number,balcony, smoke, price,room_type_id) values (047,false,false,289.99,2);
+insert into rooms(number,balcony, smoke, price,room_type_id) values (048,false,true,189.99,3);
+insert into rooms(number,balcony, smoke, price,room_type_id) values (049,true,true,289.99,2);
+insert into rooms(number,balcony, smoke, price,room_type_id) values (050,false,false, 89.99,1);
