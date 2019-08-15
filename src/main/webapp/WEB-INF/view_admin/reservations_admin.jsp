@@ -83,19 +83,31 @@
     </div>
     <div class="child2">
        <div class="prevNextContainer">
-                    <a <% if((Integer)request.getAttribute("page")==1){ %> style="visibility:hidden;"<%}else{%>
-                                                                                                            style="visibility:visible;font-size:1.5em; color:white;font-weight:bold;"<%}
-              int p = (Integer)request.getAttribute("page")-1;%>href="reservations_admin?page=<%=p%>" class="btn"
-               id="btn_prev"><fmt:message key="prev"/></a>
-              <span style = "font-size:1.3em; color:white;font-weight:bold;" class="pages" id="page">${page}</span>
-                      <a  <% int p1 = (Integer)request.getAttribute("page")+1;
-                      if((Integer)request.getAttribute("count") == 0 ||
-                      (Integer)request.getAttribute("count")<=(Integer)request.getAttribute("page")*10){%>
-                      style="visibility:hidden;"
-                     <% }
-                      %> href="reservations_admin?page=<%=p1%>" style = "font-size:1.5em; color:white;font-weight:bold;"
-                       class="btn" id="btn_next"><fmt:message key="next"/></a>
-       </div>
+                   <a <c:choose>
+                       <c:when test="${page=='1'}">
+                           style="visibility:hidden;"
+                       </c:when>
+                       <c:otherwise>
+                           style="visibility:visible;font-size:1.5em; color:white;font-weight:bold;"
+                       </c:otherwise>
+                   </c:choose>
+                               <%int p = (Integer)request.getAttribute("page")-1;%>href="reservations_admin?page=<%=p%>" class="btn"
+                               id="btn_prev"><fmt:message key="prev"/></a>
+                   <span style="font-size:1.3em; color:white;font-weight:bold;" class="pages" id="page">${page}</span>
+                   <a  <c:choose>
+                       <c:when test="${count=='0'}">
+                           style="visibility:hidden;"
+                       </c:when>
+                       <c:when test="${count<=page*'10'}">
+                           style="visibility:hidden;"
+                       </c:when>
+                       <c:otherwise>
+                           style="visibility:visible;font-size:1.5em; color:white;font-weight:bold;"
+                       </c:otherwise>
+                   </c:choose>
+                               <% int p1 = (Integer) request.getAttribute("page") + 1;%>href="reservations_admin?page=<%=p1%>"
+                               class="btn" id="btn_next"><fmt:message key="next"/></a>
+               </div>
     </div>
 </div>
 <script><%@include file="../../js/bootstrap/bootstrap_script_1.js"%></script>
