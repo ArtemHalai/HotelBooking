@@ -13,9 +13,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import java.io.IOException;
 
-import static enums.Mappings.REGISTRATION_PAGE;
-import static enums.Mappings.SUCCESSFUL_PAGE;
-import static org.junit.Assert.*;
+import static enums.Mappings.*;
 import static org.mockito.Mockito.*;
 
 @RunWith(MockitoJUnitRunner.class)
@@ -36,6 +34,7 @@ public class SuccessfulServletTest {
     @Test
     public void doGet() throws ServletException, IOException {
         when(request.getRequestDispatcher(SUCCESSFUL_PAGE.getName())).thenReturn(dispatcher);
+        when(request.getRequestURI()).thenReturn(SUCCESSFUL.getName());
         servlet.doGet(request,response);
         verify(request, times(1)).getRequestDispatcher(SUCCESSFUL_PAGE.getName());
     }

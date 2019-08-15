@@ -12,8 +12,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-import static enums.Mappings.SUCCESSFUL_PAGE;
-import static enums.Mappings.UNSUCCESSFUL_PAGE;
+import static enums.Mappings.*;
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.*;
 import static org.mockito.Mockito.*;
@@ -36,6 +35,7 @@ public class UnsuccessfulServletTest {
     @Test
     public void doGet() throws ServletException, IOException {
         when(request.getRequestDispatcher(UNSUCCESSFUL_PAGE.getName())).thenReturn(dispatcher);
+        when(request.getRequestURI()).thenReturn(UNSUCCESSFUL.getName());
         servlet.doGet(request,response);
         verify(request, times(1)).getRequestDispatcher(UNSUCCESSFUL_PAGE.getName());
         assertThat(request.getRequestDispatcher(UNSUCCESSFUL_PAGE.getName()), is(dispatcher));
